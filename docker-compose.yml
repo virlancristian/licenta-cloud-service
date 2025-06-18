@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: licenta_cloud_db
+      MYSQL_USER: licentadb_user
+      MYSQL_PASSWORD: aB3!xL9m!Qw7T!p2Nc!d
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  app:
+    build: .
+    container_name: nestjs-app
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: mysql://licentadb_user:aB3!xL9m!Qw7T!p2Nc!d@mysql:3306/licenta_cloud_db
+
+volumes:
+  mysql_data:
